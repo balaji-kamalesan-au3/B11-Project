@@ -57,5 +57,67 @@ UserLedger.prototype.addUser = function (user) {
 }
 
 
+const transactionStates = {
+  pending: "PENDING",
+  successful: "SUCCESSFUL",
+  failure: "FAILURE",
+  canceled: "CANCELLED",
+}
+
+// transaction model
+export function Transaction(id, amount, sender, reciever) {
+  this.id = id;
+  this.amount = amount;
+  this.sender = sender
+  this.reciever = reciever;
+  this.date = new Date().toISOString();
+  this.status = transactionStates.pending
+}
 
 
+function TransactionLedger() {
+  this.transactions = [];
+}
+
+
+TransactionLedger.prototype.addTransaction = function (transaction) {
+  if (transaction instanceof Transaction) {
+    this.transactions.push(transaction);
+  }
+  else {
+    throw new Error("Transaction Type must be a Transaction");
+  }
+}
+
+function changeTransactionType(type) {
+  var ObjectData = Object.keys(transactionStates);
+  var fil = ObjectData.filter(data => transactionStates[data] === type);
+  return fil.length > 0
+}
+
+
+Transaction.prototype.updateTransaction = function (type) {
+  if (changeTransactionType(type)) {
+    this.status = type;
+  }
+  else {
+    throw new Error("Transaction Type Not matching");
+  }
+}
+
+Transaction.prototype.addToLedger = function (ledger) {
+  if (ledger instanceof TransactionLedger) {
+    ledger.addTransaction(this);
+  } else {
+    throw new Error("Transaction Issue");
+  }
+}
+
+var newLedger = new TransactionLedger();
+console.log(newLedger)
+var transaction1 = new Transaction(1, 1000, "Balaji", "Chandru");
+
+transaction1.addToLedger(newLedger);
+transaction1.updateTransaction(transactionStates.successful);
+
+console.log(newLedger)
