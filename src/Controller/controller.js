@@ -57,7 +57,7 @@ UserLedger.prototype.addUser = function (user) {
 }
 
 
-const transactionStates = {
+export const transactionStates = {
   pending: "PENDING",
   successful: "SUCCESSFUL",
   failure: "FAILURE",
@@ -75,7 +75,7 @@ export function Transaction(id, amount, sender, reciever) {
 }
 
 
-function TransactionLedger() {
+export function TransactionLedger() {
   this.transactions = [];
 }
 
@@ -87,6 +87,15 @@ TransactionLedger.prototype.addTransaction = function (transaction) {
   else {
     throw new Error("Transaction Type must be a Transaction");
   }
+}
+
+
+TransactionLedger.prototype.getSuccessfullTranasactions = function () {
+  return this.transactions.filter(transaction => {
+    if (transaction.status === transactionStates.successful) {
+      return transaction;
+    }
+  })
 }
 
 function changeTransactionType(type) {
@@ -113,11 +122,21 @@ Transaction.prototype.addToLedger = function (ledger) {
   }
 }
 
-var newLedger = new TransactionLedger();
-console.log(newLedger)
-var transaction1 = new Transaction(1, 1000, "Balaji", "Chandru");
+// Execution Start
 
-transaction1.addToLedger(newLedger);
-transaction1.updateTransaction(transactionStates.successful);
+// var newLedger = new TransactionLedger();
 
-console.log(newLedger)
+// var transaction1 = new Transaction(1, 1000, "Balaji", "Chandru");
+
+// var transaction2 = new Transaction(1, 1000, "Balaji", "Chandru");
+// var transaction3 = new Transaction(1, 1000, "Balaji", "Chandru");
+
+// transaction1.addToLedger(newLedger);
+// transaction2.addToLedger(newLedger);
+// transaction3.addToLedger(newLedger);
+// transaction1.updateTransaction(transactionStates.successful);
+// console.log("Before Updating 2")
+// console.log(newLedger.getSuccessfullTranasactions())
+// transaction2.updateTransaction(transactionStates.successful)
+// console.log("After Updating 2")
+// console.log(newLedger.getSuccessfullTranasactions())

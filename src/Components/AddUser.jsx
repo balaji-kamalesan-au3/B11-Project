@@ -33,7 +33,7 @@ export default function AddUser({ addUserForm, onFormChange, addUser }) {
 }
 
 
-function InputComponent({ type, name, value, onChange, title, placeholder }) {
+export function InputComponent({ type, name, value, onChange, title, placeholder }) {
   return (
     <div>
       <h3>{title}</h3>
